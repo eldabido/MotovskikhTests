@@ -11,9 +11,11 @@
 
 │   └── wrappers.go        # Middleware
 
+
 ├── cmd/main/              # Точка входа
 
 │   └── main.go           # Инициализация приложения
+
 
 ├── entities/              # Модели данных
 
@@ -25,13 +27,11 @@
 
 │   └── test.go
 
-├── generated/            # Сгенерированный код Swagger
-
-│   └── models/          # Модели из swagger.yml
 
 ├── manager/              # Бизнес-логика (service layer)
 
 │   └── manager.go       # Основная логика
+
 
 ├── mysql/               # Работа с БД (data access layer)
 

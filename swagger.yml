@@ -1,0 +1,506 @@
+swagger: '2.0'
+info:
+  title: Motovskikh Server
+  version: 1.0.0
+schemes:
+  - https
+basePath: /
+consumes:
+  - application/json
+produces:
+  - application/json
+  - file
+  - text/html
+
+definitions:
+  GetTestRequest:
+    type: object
+    required:
+      - language
+      - name
+    properties:
+      language:
+        type: string
+      name:
+        type: string
+      raskraska:
+        type: boolean
+      room:
+        type: string
+      workshop:
+        type: boolean
+
+  GetTestOldResponse:
+    type: object
+    required:
+      - name
+      - paths
+      - settings
+      - texts
+    properties:
+      name:
+        type: string
+      paths:
+        type: array
+        items:
+          $ref: '#/definitions/Path'
+      settings:
+        $ref: '#/definitions/SettingsOld'
+      texts:
+        type: object
+        additionalProperties:
+          type: object
+
+  GetTestResponse:
+    type: object
+    required:
+      - paths
+      - settings
+      - texts
+    properties:
+      paths:
+        type: array
+        items:
+          $ref: '#/definitions/Path'
+      settings:
+        $ref: '#/definitions/Settings'
+      texts:
+        type: object
+        additionalProperties:
+          type: object
+
+  EnjoyRequest:
+    type: object
+    required:
+      - name
+      - pass
+    properties:
+      name:
+        type: string
+      pass:
+        type: string
+
+  LobbyV1Request:
+    type: object
+    required:
+      - language
+    properties:
+      language:
+        type: string
+
+  LobbyV1Response:
+    type: array
+    items:
+      type: object
+      properties:
+        host:
+          type: string
+        players:
+          type: integer
+        url:
+          type: string
+
+  RespecterGetGameRequest:
+    type: object
+    required:
+      - game_id
+    properties:
+      game_id:
+        type: string
+
+  RespecterLoadGameRequest:
+    type: object
+    required:
+      - secret
+    properties:
+      secret:
+        type: string
+
+  # TODO: GetGameResponse
+  RespecterLoadGameResponse:
+    type: object
+    properties:
+      game_id:
+        type: string
+      sesame:
+        type: string
+      questions:
+        type: array
+        items:
+          type: object
+          required:
+            - title
+          properties:
+            title:
+              type: string
+            placeholder:
+              type: string
+
+  RespecterLikeRequest:
+    type: object
+    required:
+      - game_id
+      - key
+      - liked
+      - respect
+    properties:
+      game_id:
+        type: string
+      key:
+        type: string
+      liked:
+        type: string
+      respect:
+        type: boolean
+
+  RespecterLoadProfileRequest:
+    type: object
+    required:
+      - game_id
+      - key
+    properties:
+      game_id:
+        type: string
+      key:
+        type: string
+
+  RespecterLoadProfileResponse:
+    type: object
+    required:
+      - real_name
+      - fake_name
+      - answers
+    properties:
+      real_name:
+        type: string
+      fake_name:
+        type: string
+      answers:
+        type: array
+        items:
+          type: string
+
+  RespecterLoadVoteRequest:
+    type: object
+    required:
+      - game_id
+      - key
+    properties:
+      game_id:
+        type: string
+      key:
+        type: string
+
+  RespecterLoadVoteResponse:
+    type: array
+    items:
+      type: object
+      required:
+        - fake_name
+        - answers
+      properties:
+        fake_name:
+          type: string
+        answers:
+          type: array
+          items:
+            type: string
+
+  RespecterSaveGameRequest:
+    type: object
+    required:
+      - game_id
+      - secret
+      - questions
+    properties:
+      game_id:
+        type: string
+      sesame:
+        type: string
+      secret:
+        type: string
+      questions:
+        type: array
+        items:
+          type: object
+          required:
+            - title
+          properties:
+            title:
+              type: string
+            placeholder:
+              type: string
+
+  RespecterSaveProfileRequest:
+    type: object
+    required:
+      - game_id
+      - key
+      - real_name
+      - fake_name
+      - answers
+    properties:
+      game_id:
+        type: string
+      key:
+        type: string
+      real_name:
+        type: string
+      fake_name:
+        type: string
+      answers:
+        type: array
+        items:
+          type: string
+
+  RespecterStatsRequest:
+    type: object
+    required:
+      - game_id
+    properties:
+      game_id:
+        type: string
+
+  RespecterStatsResponse:
+    type: object
+    required:
+      - stats
+    properties:
+      sesame:
+        type: string
+      stats:
+        type: array
+        items:
+          required:
+            - real_name
+            - fake_name
+            - votes
+            - respects
+            - bans
+          properties:
+            real_name:
+              type: string
+            fake_name:
+              type: string
+            votes:
+              type: integer
+            respects:
+              type: integer
+            bans:
+              type: integer
+
+  SendCommentRequest:
+    type: object
+    required:
+      - from
+      - message
+      - note
+    properties:
+      from:
+        type: string
+      message:
+        type: string
+      note:
+        type: string
+
+  SendMessageRequest:
+    type: object
+    required:
+      - message
+    properties:
+      from:
+        type: string
+      message:
+        type: string
+
+  WorkshopDeleteRequest:
+    type: object
+    required:
+      - name
+      - secret
+    properties:
+      name:
+        type: string
+      secret:
+        type: string
+
+  WorkshopListResponse:
+    type: array
+    items:
+      type: object
+      required:
+        - author
+        - name
+        - title
+        - mark
+        - theme
+        - official
+        - likes
+        - questions
+        - created_at
+      properties:
+        author:
+          type: string
+        name:
+          type: string
+        title:
+          type: string
+        mark:
+          type: string
+        theme:
+          type: string
+        official:
+          type: string
+        questions:
+          type: integer
+        likes:
+          type: integer
+        created_at:
+          type: integer
+
+  WorkshopLoadRequest:
+    type: object
+    required:
+      - name
+      - secret
+    properties:
+      name:
+        type: string
+      secret:
+        type: string
+
+  WorkshopRateRequest:
+    type: string
+
+  WorkshopSaveResponse:
+    type: object
+    required:
+      - name
+      - secret
+    properties:
+      name:
+        type: string
+      secret:
+        type: string
+
+  # Models.
+  I18n:
+    type: object
+    additionalProperties:
+      type: string
+
+  Path:
+    required:
+      - name
+      - object
+      - src
+    properties:
+      capital:
+        $ref: '#/definitions/I18n'
+      capitalParams:
+        type: object
+      name:
+        description: Используется для флагов
+        type: string
+      object:
+        $ref: '#/definitions/I18n'
+      object_params:
+        type: object
+      subclass:
+        type: string
+      src:
+        description: Исходный код области
+        type: string
+
+  SettingsOld:
+    description: Настройки для старых тестов.
+    properties:
+      blocks:
+        description: Блоки. Преобразовались в modes.
+        type: object
+        properties:
+          modes:
+            type: array
+            items:
+              type: string
+      boxies:
+        description: Ширина коробочки.
+        type: integer
+      height:
+        description: Высота теста.
+        type: integer
+      hymn:
+        type: boolean
+        x-omitempty: false
+      languages:
+        description: Дополнительные языки в тесте.
+        type: array
+        items:
+          type: string
+        x-omitempty: true
+      width:
+        description: Ширина теста.
+        type: integer
+      zoom:
+        description: Допустимый максимум зума. При 0 подразумевается значение по умолчанию, при -1 — отключить зум.
+        type: integer
+        x-omitempty: false
+
+  Settings:
+    description: Настройки теста
+    properties:
+      canvas_path:
+        description: Путь до холста.
+        type: string
+      custom_css:
+        type: array
+        items:
+          type: string
+        x-omitempty: true
+      height:
+        description: Высота теста.
+        type: integer
+      hymn:
+        type: boolean
+        x-omitempty: false
+      languages:
+        description: Дополнительные языки в тесте.
+        type: array
+        items:
+          type: string
+        x-omitempty: true
+      modes:
+        description: Доступные режимы игры.
+        type: array
+        items:
+          type: string
+        x-omitempty: true
+      width:
+        description: Ширина теста.
+        type: integer
+      zoom:
+        description: Допустимый максимум зума. При 0 подразумевается значение по умолчанию, при -1 — отключить зум.
+        type: integer
+        x-omitempty: false
+
+  WorkshopTest:
+    type: object
+    required:
+      - paths
+      - settings
+      - texts
+    properties:
+      name:
+        type: string
+      secret:
+        type: string
+      is_deleted:
+        type: boolean
+      paths:
+        type: array
+        items:
+          $ref: '#/definitions/Path'
+      settings:
+        $ref: '#/definitions/Settings'
+      texts:
+        type: object
